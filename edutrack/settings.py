@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -23,13 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Docker Compose requires DJANGO_SECRET_KEY; the fallback keeps local commands usable.
-SECRET_KEY = os.environ.get(
-    'DJANGO_SECRET_KEY',
-    'django-insecure-gpc#9=s+9e7=p)-zo(4a^g2heisgc89fc9h7q(#b)3khz$tv07',
-)
+# SECRET_KEY = os.environ.get(
+#     'DJANGO_SECRET_KEY',
+#     'django-insecure-gpc#9=s+9e7=p)-zo(4a^g2heisgc89fc9h7q(#b)3khz$tv07',
+# )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in {'true', '1', 'yes'}
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in {'true', '1', 'yes'}
+SECRET_KEY = os.environ.get("SECRET_KEY", "local-development-key")
+
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     host.strip()
@@ -95,10 +99,14 @@ WSGI_APPLICATION = 'edutrack.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'),
+    # }
+    "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3",
+        conn_max_age=600
+    )
 }
 
 
