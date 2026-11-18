@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,14 @@ ALLOWED_HOSTS = [
     ).split(',')
     if host.strip()
 ]
+for variable in ('VERCEL_URL', 'VERCEL_PROJECT_PRODUCTION_URL'):
+    vercel_url = os.environ.get(variable, '').strip()
+    if vercel_url:
+        vercel_host = urlsplit(
+            vercel_url if '://' in vercel_url else f'//{vercel_url}'
+        ).hostname
+        if vercel_host and vercel_host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(vercel_host)
 
 
 # Application definition
