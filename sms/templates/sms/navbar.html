@@ -1,0 +1,26 @@
+<nav class="site-nav" aria-label="Main navigation">
+    <a class="brand" href="{% url 'sms:student_list' %}" aria-label="EduTrack SMS home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span class="brand-copy">
+            <span class="brand-name">EduTrack <span>SMS</span></span>
+            <span class="brand-caption">Student management</span>
+        </span>
+    </a>
+    <div class="nav-links">
+        <a
+            class="site-nav-link{% if request.resolver_match.url_name == 'student_list' or request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'student_attendance_report' or request.resolver_match.url_name == 'edit_student' %} is-active{% endif %}"
+            href="{% url 'sms:student_list' %}"
+            {% if request.resolver_match.url_name == 'student_list' or request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'student_attendance_report' or request.resolver_match.url_name == 'edit_student' %}aria-current="page"{% endif %}
+        >Students</a>
+        <a
+            class="site-nav-link{% if request.resolver_match.url_name == 'register_student' %} is-active{% endif %}"
+            href="{% url 'sms:register_student' %}"
+            {% if request.resolver_match.url_name == 'register_student' %}aria-current="page"{% endif %}
+        >Register student</a>
+        <a
+            class="site-nav-link{% if request.resolver_match.url_name == 'batch_list' or request.resolver_match.url_name == 'create_batch' or request.resolver_match.url_name == 'take_attendance' or request.resolver_match.url_name == 'attendance_report' %} is-active{% endif %}"
+            href="{% url 'sms:batch_list' %}"
+            {% if request.resolver_match.url_name == 'batch_list' or request.resolver_match.url_name == 'create_batch' or request.resolver_match.url_name == 'take_attendance' or request.resolver_match.url_name == 'attendance_report' %}aria-current="page"{% endif %}
+        >Batches &amp; attendance</a>
+    </div>
+</nav>

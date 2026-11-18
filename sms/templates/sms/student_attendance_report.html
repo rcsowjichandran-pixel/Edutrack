@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Attendance history - {{ student }}</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container">
+        {% include 'sms/navbar.html' %}
+        <h1>Attendance history: {{ student.first_name }} {{ student.last_name }}</h1>
+        <p>
+            <a href="{% url 'sms:attendance_report' student.batch_id %}">
+                Batch report: {{ student.batch.name }}
+            </a>
+        </p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            <td>
+                                <span class="status-badge status-{{ record.status|lower }}">
+                                    {{ record.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No attendance records yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p><a href="{% url 'sms:student_list' %}">Back to students</a></p>
+    </main>
+</body>
+</html>

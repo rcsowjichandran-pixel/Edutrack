@@ -1,0 +1,66 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Students</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container">
+        {% include 'sms/navbar.html' %}
+        <h1>Students</h1>
+        <nav class="actions">
+            <a class="button" href="{% url 'sms:register_student' %}">Register a student</a>
+            <a class="button button-secondary" href="{% url 'sms:batch_list' %}">View batches</a>
+        </nav>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Batch</th>
+                        <th>Courses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>
+                                {{ student.first_name }} {{ student.last_name }}
+                                <a href="{% url 'sms:student_attendance_report' student.id %}">
+                                    Attendance history
+                                </a>
+                                <a
+                                    class="button button-secondary"
+                                    href="{% url 'sms:edit_student' student.id %}"
+                                >Edit student / courses</a>
+                            </td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.batch.name }}</td>
+                            <td>
+                                {% for course in student.courses.all %}
+                                    <div class="course-entry">
+                                        {{ course.name }}
+                                        <a
+                                            class="button button-secondary"
+                                            href="{% url 'sms:issue_certificate' student.id course.id %}"
+                                        >Issue Certificate</a>
+                                    </div>
+                                {% empty %}
+                                    No courses enrolled.
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No students registered yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

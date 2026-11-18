@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Take attendance</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container">
+        {% include 'sms/navbar.html' %}
+        <h1>Take attendance: {{ batch.name }}</h1>
+        <p class="muted">Date: {{ today }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in attendance_forms %}
+                            <tr>
+                                <td>{{ entry.student.first_name }} {{ entry.student.last_name }}</td>
+                                <td>
+                                    {{ entry.form.status }}
+                                    {{ entry.form.status.errors }}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="2">There are no students in this batch.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if attendance_forms %}
+                <button type="submit">Save attendance</button>
+            {% endif %}
+        </form>
+        <p><a href="{% url 'sms:batch_list' %}">Back to batches</a></p>
+    </main>
+</body>
+</html>

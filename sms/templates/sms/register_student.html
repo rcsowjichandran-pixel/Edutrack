@@ -1,0 +1,21 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Register student</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container form-container">
+        {% include 'sms/navbar.html' %}
+        <h1>Register student</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register student</button>
+        </form>
+        <p><a href="{% url 'sms:student_list' %}">View students</a></p>
+    </main>
+</body>
+</html>

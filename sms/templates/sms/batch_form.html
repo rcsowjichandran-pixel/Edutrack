@@ -1,0 +1,23 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Add batch - EduTrack SMS</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=4">
+</head>
+<body>
+    <main class="container form-container">
+        {% include 'sms/navbar.html' %}
+        <p class="overview-label">BATCH MANAGEMENT</p>
+        <h1>Add batch</h1>
+        <p class="muted">Create a class and set its start date.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save batch</button>
+            <a class="button button-secondary" href="{% url 'sms:batch_list' %}">Cancel</a>
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Attendance report - {{ batch.name }}</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container">
+        {% include 'sms/navbar.html' %}
+        <h1>Attendance report: {{ batch.name }}</h1>
+        <p><a href="{% url 'sms:batch_list' %}">Back to batches</a></p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th class="status-present">Present days</th>
+                        <th class="status-absent">Absent days</th>
+                        <th class="status-late">Late days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for summary in attendance_summary %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'sms:student_attendance_report' summary.student.id %}">
+                                    {{ summary.student.first_name }} {{ summary.student.last_name }}
+                                </a>
+                            </td>
+                            <td class="status-present">{{ summary.present }}</td>
+                            <td class="status-absent">{{ summary.absent }}</td>
+                            <td class="status-late">{{ summary.late }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No students in this batch yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Edit student</title>
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}?v=3">
+</head>
+<body>
+    <main class="container form-container">
+        {% include 'sms/navbar.html' %}
+        <h1>Edit {{ student.first_name }} {{ student.last_name }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save changes</button>
+        </form>
+        <p><a href="{% url 'sms:student_list' %}">View students</a></p>
+    </main>
+</body>
+</html>
